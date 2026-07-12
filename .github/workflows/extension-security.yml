@@ -1,0 +1,76 @@
+name: Extension security audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - settings.json
+      - .github/workflows/extension-security.yml
+  pull_request:
+    paths:
+      - settings.json
+      - .github/workflows/extension-security.yml
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm-audit:
+    name: Audit pinned Pi packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Create isolated audit project
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir audit-project
+          node <<'NODE'
+          const fs = require("node:fs");
+          const settings = JSON.parse(fs.readFileSync("settings.json", "utf8"));
+          const dependencies = {};
+
+          for (const entry of settings.packages ?? []) {
+            const source = typeof entry === "string" ? entry : entry.source;
+            if (typeof source !== "string" || !source.startsWith("npm:")) continue;
+
+            const spec = source.slice(4);
+            const separator = spec.lastIndexOf("@");
+            if (separator <= 0 || separator === spec.length - 1) {
+              throw new Error(`Package must have an exact version: ${source}`);
+            }
+
+            const name = spec.slice(0, separator);
+            const version = spec.slice(separator + 1);
+            if (!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version)) {
+              throw new Error(`Package is not pinned to an exact version: ${source}`);
+            }
+            dependencies[name] = version;
+          }
+
+          fs.writeFileSync(
+            "audit-project/package.json",
+            JSON.stringify({ name: "pi-extension-audit", private: true, dependencies }, null, 2) + "\n",
+          );
+          NODE
+
+      - name: Resolve without lifecycle scripts
+        working-directory: audit-project
+        run: |
+          npm config set registry https://registry.npmjs.org/ --location=project
+          npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Check registry signatures
+        working-directory: audit-project
+        run: npm audit signatures
+
+      - name: Check known vulnerabilities
+        working-directory: audit-project
+        run: npm audit --omit=dev --audit-level=high
