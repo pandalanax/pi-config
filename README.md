@@ -12,14 +12,16 @@ Authentication, sessions, history, trust decisions, and installed package caches
 
 ## Extension security checks
 
-The `Extension security audit` GitHub Actions workflow runs on changes to `settings.json`, on pull requests, manually, and every Monday. It:
+The pinned Pi packages are mirrored as exact `devDependencies` in `package.json` and `package-lock.json` so GitHub can track their complete npm dependency graph. Dependabot is configured to:
 
-- rejects npm package declarations that are not pinned to exact versions;
-- installs dependencies in an isolated runner with lifecycle scripts disabled;
-- verifies npm registry signatures with `npm audit signatures`;
-- fails for known high or critical vulnerabilities reported by `npm audit`.
+- check dependencies daily;
+- create pull requests for available updates;
+- create security-update pull requests when GitHub reports a vulnerable dependency;
+- expose vulnerability alerts through the repository Security tab and GitHub notifications.
 
-This reduces risk but cannot prove that a package is safe. A newly malicious release may not yet have a published advisory, so review extension source and version changes before updating pins.
+Email delivery depends on the watching and security-alert notification settings of your GitHub account. A Dependabot pull request updates `package.json` and `package-lock.json`; update the corresponding runtime pin in `settings.json` after reviewing it.
+
+Dependabot only detects published advisories. It cannot prove that a package is safe or immediately detect every malicious release, so review extension source and version changes before updating runtime pins.
 
 ## NixOS with Home Manager
 
