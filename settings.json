@@ -1,0 +1,18 @@
+{
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-sol",
+  "images": {
+    "blockImages": true
+  },
+  "editorPaddingX": 2,
+  "theme": "dark",
+  "packages": [
+    "npm:@hypabolic/pi-hypa",
+    "npm:pi-web-access",
+    "npm:pi-subagents",
+    "npm:@narumitw/pi-codex-usage",
+    "npm:@jc4649/filechanges",
+    "npm:@narumitw/pi-statusline",
+    "npm:@smoose/pi-themes"
+  ]
+}
