@@ -11,3 +11,13 @@ updates:
       - security
     commit-message:
       prefix: deps
+
+  - package-ecosystem: nix
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    commit-message:
+      prefix: deps
