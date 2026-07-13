@@ -40,7 +40,7 @@
         programs.pi.coding-agent = {
           enable = true;
           inherit settings rules;
-          extensions = [ ./extensions/context-footer.ts ];
+          extensions = [ ./extensions/statusline/src/statusline.ts ];
         };
       };
 
@@ -50,7 +50,7 @@
         programs.pi.coding-agent = {
           enable = true;
           inherit settings rules;
-          extensions = [ ./extensions/context-footer.ts ];
+          extensions = [ ./extensions/statusline/src/statusline.ts ];
         };
       };
     };
