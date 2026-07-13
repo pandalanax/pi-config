@@ -9,7 +9,12 @@
     };
   };
 
-  outputs = { self, nixpkgs, pi }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      pi,
+    }:
     let
       systems = [
         "aarch64-darwin"
@@ -20,12 +25,42 @@
       forAllSystems = nixpkgs.lib.genAttrs systems;
       settings = builtins.fromJSON (builtins.readFile ./settings.json);
       rules = builtins.readFile ./APPEND_SYSTEM.md;
+      bundledStatusline =
+        pkgs:
+        pkgs.runCommand "pi-statusline.js"
+          {
+            nativeBuildInputs = [ pkgs.esbuild ];
+            src = ./extensions/statusline;
+          }
+          ''
+            esbuild "$src/src/statusline.ts" \
+              --bundle \
+              --format=esm \
+              --packages=external \
+              --platform=node \
+              --outfile="$out"
+          '';
+      agentConfig = pkgs: {
+        inherit settings rules;
+        extensions = [ (bundledStatusline pkgs) ];
+      };
     in
     {
-      packages = forAllSystems (system: {
-        default = pi.packages.${system}.coding-agent;
-        pi-coding-agent = pi.packages.${system}.coding-agent;
-      });
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          configured = pi.lib.mkCodingAgent {
+            inherit pkgs;
+            modules = [ { pi.coding-agent = agentConfig pkgs; } ];
+          };
+        in
+        {
+          default = configured.package;
+          pi-coding-agent = configured.package;
+          statusline-extension = bundledStatusline pkgs;
+        }
+      );
 
       apps = forAllSystems (system: {
         default = {
@@ -34,23 +69,17 @@
         };
       });
 
-      homeModules.default = { ... }: {
+      homeModules.default = { pkgs, ... }: {
         imports = [ pi.homeModules.default ];
-
-        programs.pi.coding-agent = {
+        programs.pi.coding-agent = agentConfig pkgs // {
           enable = true;
-          inherit settings rules;
-          extensions = [ ./extensions/statusline/src/statusline.ts ];
         };
       };
 
-      nixosModules.default = { ... }: {
+      nixosModules.default = { pkgs, ... }: {
         imports = [ pi.nixosModules.default ];
-
-        programs.pi.coding-agent = {
+        programs.pi.coding-agent = agentConfig pkgs // {
           enable = true;
-          inherit settings rules;
-          extensions = [ ./extensions/statusline/src/statusline.ts ];
         };
       };
     };
