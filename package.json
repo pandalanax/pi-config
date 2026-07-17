@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "0.80.6",
-    "@hypabolic/pi-hypa": "0.1.10",
+    "@hypabolic/pi-hypa": "0.1.11",
     "@jc4649/filechanges": "0.1.0",
     "@narumitw/pi-codex-usage": "0.14.1",
     "@smoose/pi-themes": "0.1.0",
