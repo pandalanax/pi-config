@@ -11,7 +11,7 @@
     "@earendil-works/pi-tui": "*"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "0.80.10",
+    "@earendil-works/pi-coding-agent": "0.82.0",
     "@hypabolic/pi-hypa": "0.1.11",
     "@jc4649/filechanges": "0.1.0",
     "@narumitw/pi-codex-usage": "0.17.2",
