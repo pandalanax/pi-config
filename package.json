@@ -14,6 +14,7 @@
     "@earendil-works/pi-coding-agent": "0.86.1",
     "@hypabolic/pi-hypa": "0.1.15",
     "@jc4649/filechanges": "0.1.0",
+    "@juicesharp/rpiv-ask-user-question": "2.11.0",
     "@narumitw/pi-codex-usage": "0.25.0",
     "@smoose/pi-themes": "0.1.2",
     "pi-mcp-adapter": "2.37.0",
