@@ -11,7 +11,7 @@
     "@earendil-works/pi-tui": "*"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "1.0.0",
+    "@earendil-works/pi-coding-agent": "1.0.1",
     "@hypabolic/pi-hypa": "1.0.2",
     "@jc4649/filechanges": "0.1.0",
     "@juicesharp/rpiv-ask-user-question": "2.12.0",
