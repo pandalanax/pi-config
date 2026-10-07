@@ -6,6 +6,7 @@
     "blockImages": true
   },
   "editorPaddingX": 2,
+  "defaultTools": ["+codemode"],
   "theme": "dark",
   "packages": [
     "npm:@hypabolic/pi-hypa@0.1.10",
