@@ -19,6 +19,6 @@
     "@smoose/pi-themes": "0.1.2",
     "pi-mcp-adapter": "5.3.0",
     "pi-subagents": "0.78.0",
-    "pi-web-access": "0.40.0"
+    "pi-web-access": "0.41.0"
   }
 }
