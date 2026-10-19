@@ -17,7 +17,7 @@
     "@juicesharp/rpiv-ask-user-question": "2.13.8",
     "@narumitw/pi-codex-usage": "0.25.0",
     "@smoose/pi-themes": "0.1.2",
-    "pi-mcp-adapter": "5.3.0",
+    "pi-mcp-adapter": "5.3.1",
     "pi-subagents": "0.78.0",
     "pi-web-access": "0.40.0"
   }
