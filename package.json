@@ -18,7 +18,7 @@
     "@narumitw/pi-codex-usage": "0.25.0",
     "@smoose/pi-themes": "0.1.2",
     "pi-mcp-adapter": "5.4.0",
-    "pi-subagents": "0.79.1",
+    "pi-subagents": "0.79.2",
     "pi-web-access": "0.43.0"
   }
 }
